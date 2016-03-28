@@ -11,6 +11,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class AddDialogFragment extends DialogFragment {
 
     private ImageButton ibtnClose = null;
@@ -55,8 +60,20 @@ public class AddDialogFragment extends DialogFragment {
         }
     }
 
+    //TODO Process Date
     private void addAction() {
         String what = etDrop.getText().toString();
         long now = System.currentTimeMillis();
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
+        Realm realm = Realm.getDefaultInstance();
+
+        Drop drop = new Drop(what, now, 0, false);
+        realm.beginTransaction();
+        realm.copyToRealm(drop);
+        realm.commitTransaction();
+        realm.close();
     }
 }
