@@ -13,7 +13,7 @@
         android:textSize="@dimen/tvTitle_font_size" />
 
     <ImageButton
-        android:id="@+id/btnClose"
+        android:id="@+id/ibtnClose"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_alignBottom="@id/tvTitle"
@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
+        android:inputType="textVisiblePassword"
         android:hint="@string/hint_et_drop"
         android:padding="@dimen/et_drop_padding" />
 
