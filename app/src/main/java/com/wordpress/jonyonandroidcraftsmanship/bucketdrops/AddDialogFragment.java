@@ -32,7 +32,7 @@ public class AddDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        myClickListener=new MyClickListener();
+        myClickListener = new MyClickListener();
         ibtnClose = (ImageButton) view.findViewById(R.id.ibtnClose);
         etDrop = (EditText) view.findViewById(R.id.etDrop);
         bpvDate = (DatePicker) view.findViewById(R.id.bpvDate);
@@ -45,14 +45,18 @@ public class AddDialogFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.ibtnClose:
-                    dismiss();
-                    break;
                 case R.id.btnAdd:
+                    addAction();
                     break;
                 default:
                     break;
             }
+            dismiss();
         }
+    }
+
+    private void addAction() {
+        String what = etDrop.getText().toString();
+        long now = System.currentTimeMillis();
     }
 }
