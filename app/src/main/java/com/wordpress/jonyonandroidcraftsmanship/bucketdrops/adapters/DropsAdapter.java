@@ -8,25 +8,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.R;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 
-import java.util.ArrayList;
+import io.realm.RealmResults;
 
 public class DropsAdapter extends RecyclerView.Adapter<DropsAdapter.DropHolder> {
 
     private LayoutInflater mLayoutInflater = null;
-    private ArrayList<String> mItems = new ArrayList<>();
+    private RealmResults<Drop> mResults = null;
 
-    public DropsAdapter(Context context) {
+
+    public DropsAdapter(Context context,RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
-        mItems = generateValues();
+        update(results);
     }
 
-    private ArrayList<String> generateValues() {
-        ArrayList<String> dummyValues = new ArrayList<>();
-        for (int i = 1; i < 101; i++) {
-            dummyValues.add("Item "+i);
-        }
-        return dummyValues;
+    public void update(RealmResults<Drop> results){
+        mResults=results;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -38,12 +37,13 @@ public class DropsAdapter extends RecyclerView.Adapter<DropsAdapter.DropHolder> 
 
     @Override
     public void onBindViewHolder(DropHolder holder, int position) {
-        holder.tvWhat.setText(mItems.get(position));
+        Drop drop=mResults.get(position);
+        holder.tvWhat.setText(drop.getWhat());
     }
 
     @Override
     public int getItemCount() {
-        return 100;
+        return mResults.size();
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {

@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class AddDialogFragment extends DialogFragment {
 
@@ -64,9 +63,6 @@ public class AddDialogFragment extends DialogFragment {
     private void addAction() {
         String what = etDrop.getText().toString();
         long now = System.currentTimeMillis();
-
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
-        Realm.setDefaultConfiguration(realmConfiguration);
 
         Realm realm = Realm.getDefaultInstance();
 
