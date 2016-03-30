@@ -2,11 +2,13 @@ package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Divider;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.DropsAdapter;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
         Glide.with(this).load(R.drawable.background).centerCrop().into(ivBackground);
         recyclerView = (BucketRecyclerView) findViewById(R.id.rvDrops);
+        recyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
 //        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
 //        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.hideIfEmpty(toolbar);
