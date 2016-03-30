@@ -6,21 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.wordpress.jonyonandroidcraftsmanship.bucketdrops.MainActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <ImageView
         android:id="@+id/ivBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView
         android:id="@+id/rvDrops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-    <include layout="@layout/empty_drops" />
+    <include
+        android:id="@+id/emptyDrops"
+        layout="@layout/empty_drops" />
 </RelativeLayout>
