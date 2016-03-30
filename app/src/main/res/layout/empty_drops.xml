@@ -18,7 +18,6 @@
         android:layout_below="@+id/ivLogo"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/btn_add_margin"
-        android:onClick="showDialog"
         android:background="@drawable/bg_btn_add"
         android:fontFamily="sans-serif-thin"
         android:paddingBottom="@dimen/btn_add_vertical_padding"

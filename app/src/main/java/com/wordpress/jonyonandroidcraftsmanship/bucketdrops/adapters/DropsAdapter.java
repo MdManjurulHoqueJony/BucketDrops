@@ -20,11 +20,16 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private LayoutInflater mLayoutInflater = null;
     private RealmResults<Drop> mResults = null;
-
+    private AddListener mAddListener = null;
 
     public DropsAdapter(Context context, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
         update(results);
+    }
+
+    public DropsAdapter(Context context, RealmResults<Drop> results, AddListener listener) {
+        this(context, results);
+        mAddListener = listener;
     }
 
     public void update(RealmResults<Drop> results) {
@@ -44,12 +49,12 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType==ITEM) {
+        if (viewType == ITEM) {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
             return new DropHolder(view);
         } else {
             View view = mLayoutInflater.inflate(R.layout.footer, parent, false);
-            return new FooterHolder(view);
+            return new FooterHolder(view,mAddListener);
         }
 
     }
@@ -57,7 +62,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DropHolder) {
-            DropHolder dropHolder= (DropHolder) holder;
+            DropHolder dropHolder = (DropHolder) holder;
             Drop drop = mResults.get(position);
             dropHolder.tvWhat.setText(drop.getWhat());
         }
@@ -65,7 +70,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mResults.size()+1;
+        return mResults.size() + 1;
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {
@@ -77,12 +82,24 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class FooterHolder extends RecyclerView.ViewHolder {
+    public static class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Button btnFooter = null;
+        AddListener mListener = null;
 
         public FooterHolder(View itemView) {
             super(itemView);
             btnFooter = (Button) itemView.findViewById(R.id.btnFooter);
+            btnFooter.setOnClickListener(this);
+        }
+
+        public FooterHolder(View itemView, AddListener listener) {
+            this(itemView);
+            mListener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.add();
         }
     }
 }
