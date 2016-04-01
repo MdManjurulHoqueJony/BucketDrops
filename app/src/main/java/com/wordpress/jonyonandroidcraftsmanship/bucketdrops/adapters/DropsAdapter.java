@@ -11,9 +11,10 @@ import android.widget.TextView;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.R;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     public static final int ITEM = 0;
     public static final int FOOTER = 1;
@@ -21,14 +22,16 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private LayoutInflater mLayoutInflater = null;
     private RealmResults<Drop> mResults = null;
     private AddListener mAddListener = null;
+    private Realm mRealm = null;
 
-    public DropsAdapter(Context context, RealmResults<Drop> results) {
+    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
+        mRealm = realm;
         update(results);
     }
 
-    public DropsAdapter(Context context, RealmResults<Drop> results, AddListener listener) {
-        this(context, results);
+    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results, AddListener listener) {
+        this(context, realm, results);
         mAddListener = listener;
     }
 
@@ -54,7 +57,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return new DropHolder(view);
         } else {
             View view = mLayoutInflater.inflate(R.layout.footer, parent, false);
-            return new FooterHolder(view,mAddListener);
+            return new FooterHolder(view, mAddListener);
         }
 
     }
@@ -70,7 +73,21 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mResults.size() + 1;
+        if (mResults == null || mResults.isEmpty()) {
+            return 0;
+        } else {
+            return mResults.size() + 1;
+        }
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).removeFromRealm();
+            mRealm.commitTransaction();
+            notifyItemRemoved(position);
+        }
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {

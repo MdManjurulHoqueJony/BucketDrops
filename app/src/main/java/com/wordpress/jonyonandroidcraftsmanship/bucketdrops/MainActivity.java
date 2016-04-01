@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.AddListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Divider;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.DropsAdapter;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.SimpleTouchCallback;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView;
 
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private BucketRecyclerView recyclerView = null;
     private Realm mRealm = null;
     private RealmResults<Drop> mResults = null;
-    private DropsAdapter dropsAdapter = null;
+    private DropsAdapter mAdapter = null;
     private View emptyDrops = null;
 
     private View.OnClickListener mBtnAddListener=new View.OnClickListener() {
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
         public void onChange() {
-            dropsAdapter.update(mResults);
+            mAdapter.update(mResults);
         }
     };
 
@@ -75,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.hideIfEmpty(toolbar);
         recyclerView.showIfEmpty(emptyDrops);
-        dropsAdapter = new DropsAdapter(this, mResults,mAddListener);
-        recyclerView.setAdapter(dropsAdapter);
-
+        mAdapter = new DropsAdapter(this,mRealm, mResults,mAddListener);
+        recyclerView.setAdapter(mAdapter);
+        SimpleTouchCallback callback=new SimpleTouchCallback(mAdapter);
+        ItemTouchHelper helper=new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
     }
 
     private void showDialog() {
