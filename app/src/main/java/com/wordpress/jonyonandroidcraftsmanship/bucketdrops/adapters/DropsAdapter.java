@@ -22,6 +22,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private LayoutInflater mLayoutInflater = null;
     private RealmResults<Drop> mResults = null;
     private AddListener mAddListener = null;
+    private MarkListener mMarkListener=null;
     private Realm mRealm = null;
 
     public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results) {
@@ -30,9 +31,10 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         update(results);
     }
 
-    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results, AddListener listener) {
+    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results, AddListener listener,MarkListener markListener) {
         this(context, realm, results);
         mAddListener = listener;
+        mMarkListener=markListener;
     }
 
     public void update(RealmResults<Drop> results) {
@@ -54,7 +56,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         if (viewType == ITEM) {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
-            return new DropHolder(view);
+            return new DropHolder(view,mMarkListener);
         } else {
             View view = mLayoutInflater.inflate(R.layout.footer, parent, false);
             return new FooterHolder(view, mAddListener);
@@ -90,12 +92,22 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class DropHolder extends RecyclerView.ViewHolder {
+    public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvWhat = null;
+        TextView tvWhen = null;
+        MarkListener mMarkListener=null;
 
-        public DropHolder(View itemView) {
+        public DropHolder(View itemView, MarkListener markListener) {
             super(itemView);
+            itemView.setOnClickListener(this);
             tvWhat = (TextView) itemView.findViewById(R.id.tvWhat);
+            tvWhen = (TextView) itemView.findViewById(R.id.tvWhen);
+            mMarkListener=markListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            mMarkListener.onMark(getAdapterPosition());
         }
     }
 

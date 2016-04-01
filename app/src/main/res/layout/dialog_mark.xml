@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Mark Completed"
+        android:textColor="@android:color/white"
         android:drawableTop="@drawable/ic_check"
         android:layout_marginTop="96dp"
         android:layout_marginBottom="96dp"
