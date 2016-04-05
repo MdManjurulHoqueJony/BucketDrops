@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.AddListener;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.CompleteListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Divider;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.DropsAdapter;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.MarkListener;
@@ -61,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private CompleteListener mCompleteListener=new CompleteListener() {
+        @Override
+        public void onComplete(int position) {
+            mAdapter.markComplete(position);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("POSITION", position);
         dialogMark.setArguments(bundle);
+        dialogMark.setCompleteListener(mCompleteListener);
         dialogMark.show(getSupportFragmentManager(), "Mark");
     }
 
