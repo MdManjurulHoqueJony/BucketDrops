@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 
+import java.util.Calendar;
+
 import io.realm.Realm;
 
 public class AddDialogFragment extends DialogFragment {
@@ -62,11 +64,20 @@ public class AddDialogFragment extends DialogFragment {
     //TODO Process Date
     private void addAction() {
         String what = etDrop.getText().toString();
+        String date = bpvDate.getDayOfMonth() + "/" + bpvDate.getMonth() + "/" + bpvDate.getYear();
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,bpvDate.getDayOfMonth());
+        calendar.set(Calendar.MONTH,bpvDate.getMonth());
+        calendar.set(Calendar.YEAR,bpvDate.getYear());
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+
         long now = System.currentTimeMillis();
 
         Realm realm = Realm.getDefaultInstance();
 
-        Drop drop = new Drop(what, now, 0, false);
+        Drop drop = new Drop(what, now, calendar.getTimeInMillis(), false);
         realm.beginTransaction();
         realm.copyToRealm(drop);
         realm.commitTransaction();

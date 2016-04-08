@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             DropHolder dropHolder = (DropHolder) holder;
             Drop drop = mResults.get(position);
             dropHolder.setWhat(drop.getWhat());
+            dropHolder.setWhen(drop.getWhen());
             dropHolder.setBackground(drop.isCompleted());
         }
     }
@@ -110,10 +112,11 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvWhen = null;
         MarkListener mMarkListener = null;
         Context mContext = null;
-        View mItemView=null;
+        View mItemView = null;
+
         public DropHolder(View itemView, MarkListener markListener) {
             super(itemView);
-            mItemView=itemView;
+            mItemView = itemView;
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
             tvWhat = (TextView) itemView.findViewById(R.id.tvWhat);
@@ -131,13 +134,17 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setBackground(boolean completed) {
-            Drawable drawable=null;
+            Drawable drawable = null;
             if (completed) {
-                drawable= ContextCompat.getDrawable(mContext,R.color.bg_drop_complete);
-            }else{
-                drawable= ContextCompat.getDrawable(mContext,R.color.bg_drop_row_light);
+                drawable = ContextCompat.getDrawable(mContext, R.color.bg_drop_complete);
+            } else {
+                drawable = ContextCompat.getDrawable(mContext, R.color.bg_drop_row_light);
             }
-            Util.setBackground(mItemView,drawable);
+            Util.setBackground(mItemView, drawable);
+        }
+
+        public void setWhen(long when) {
+            tvWhen.setText(DateUtils.getRelativeTimeSpanString(when, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
         }
     }
 
