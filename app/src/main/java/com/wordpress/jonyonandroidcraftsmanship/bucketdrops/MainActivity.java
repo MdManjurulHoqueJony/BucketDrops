@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.AddListener;
@@ -25,6 +24,7 @@ import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecycl
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -140,16 +140,24 @@ public class MainActivity extends AppCompatActivity {
         int id=item.getItemId();
         switch (id){
             case R.id.actionAdd:
-                Toast.makeText(MainActivity.this, "Add", Toast.LENGTH_SHORT).show();
-                break;
+                showDialog();
+                return true;
             case R.id.actionSortAscendingDate:
-                break;
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
+                mResults.addChangeListener(realmChangeListener);
+                return true;
             case R.id.actionSortDescendingDate:
-                break;
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
+                mResults.addChangeListener(realmChangeListener);
+                return true;
             case R.id.actionShowComplete:
-                break;
+                mResults = mRealm.where(Drop.class).equalTo("isCompleted",true).findAllAsync();
+                mResults.addChangeListener(realmChangeListener);
+                return true;
             case R.id.actionShowIncomplete:
-                break;
+                mResults = mRealm.where(Drop.class).equalTo("isCompleted",false).findAllAsync();
+                mResults.addChangeListener(realmChangeListener);
+                return true;
             default:
                 break;
         }
