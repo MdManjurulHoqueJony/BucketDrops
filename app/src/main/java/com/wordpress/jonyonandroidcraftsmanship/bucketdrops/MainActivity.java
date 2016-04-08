@@ -1,5 +1,6 @@
 package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.AddListener
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.CompleteListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Divider;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.DropsAdapter;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Filter;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.MarkListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.SimpleTouchCallback;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private CompleteListener mCompleteListener=new CompleteListener() {
+    private CompleteListener mCompleteListener = new CompleteListener() {
         @Override
         public void onComplete(int position) {
             mAdapter.markComplete(position);
@@ -82,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize() {
         mRealm = Realm.getDefaultInstance();
-        mResults = mRealm.where(Drop.class).findAllAsync();
+        int filterOption = load();
+        loadResults(filterOption);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         emptyDrops = findViewById(R.id.emptyDrops);
         mBtnAdd = (Button) findViewById(R.id.btnAdd);
@@ -131,36 +134,76 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch (id){
+        int id = item.getItemId();
+        boolean handled = true;
+        int filterOption = Filter.NONE;
+        switch (id) {
             case R.id.actionAdd:
                 showDialog();
-                return true;
+                break;
             case R.id.actionSortAscendingDate:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
-                mResults.addChangeListener(realmChangeListener);
-                return true;
+                filterOption=Filter.LEAST_TIME_LEFT;
+                save(filterOption);
+                break;
             case R.id.actionSortDescendingDate:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
-                mResults.addChangeListener(realmChangeListener);
-                return true;
+                filterOption=Filter.MOST_TIME_LEFT;
+                save(filterOption);
+                break;
             case R.id.actionShowComplete:
-                mResults = mRealm.where(Drop.class).equalTo("isCompleted",true).findAllAsync();
-                mResults.addChangeListener(realmChangeListener);
-                return true;
+                filterOption=Filter.COMPLETE;
+                save(filterOption);
+                break;
             case R.id.actionShowIncomplete:
-                mResults = mRealm.where(Drop.class).equalTo("isCompleted",false).findAllAsync();
-                mResults.addChangeListener(realmChangeListener);
-                return true;
+                filterOption=Filter.INCOMPLETE;
+                save(filterOption);
+                break;
+            default:
+                handled = false;
+                break;
+        }
+        loadResults(filterOption);
+        return handled;
+    }
+
+    private void loadResults(int filterOption) {
+        switch (filterOption) {
+            case Filter.NONE:
+                mResults = mRealm.where(Drop.class).findAllAsync();
+                break;
+            case Filter.LEAST_TIME_LEFT:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
+                break;
+            case Filter.MOST_TIME_LEFT:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
+                break;
+            case Filter.COMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("isCompleted", true).findAllAsync();
+                break;
+            case Filter.INCOMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("isCompleted", false).findAllAsync();
+                break;
             default:
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        mResults.addChangeListener(realmChangeListener);
+    }
+
+    private void save(int filterOption) {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("filter", filterOption);
+        editor.apply();
+    }
+
+    private int load() {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        int filterOption = preferences.getInt("filter", Filter.NONE);
+        return filterOption;
     }
 }
