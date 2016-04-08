@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.AddListener;
@@ -124,5 +127,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mResults.removeChangeListener(realmChangeListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        switch (id){
+            case R.id.actionAdd:
+                Toast.makeText(MainActivity.this, "Add", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.actionSortAscendingDate:
+                break;
+            case R.id.actionSortDescendingDate:
+                break;
+            case R.id.actionShowComplete:
+                break;
+            case R.id.actionShowIncomplete:
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
