@@ -2,6 +2,7 @@ package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -94,11 +95,13 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.background).centerCrop().into(ivBackground);
         recyclerView = (BucketRecyclerView) findViewById(R.id.rvDrops);
         recyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
 //        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.hideIfEmpty(toolbar);
         recyclerView.showIfEmpty(emptyDrops);
         mAdapter = new DropsAdapter(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter.setHasStableIds(true);
         recyclerView.setAdapter(mAdapter);
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);

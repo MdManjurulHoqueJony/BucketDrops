@@ -33,12 +33,12 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private MarkListener mMarkListener = null;
     private Realm mRealm = null;
     private int mFilterOption = Filter.NONE;
-    private Context mContext=null;
+    private Context mContext = null;
 
     public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
         mRealm = realm;
-        mContext=context;
+        mContext = context;
         update(results);
     }
 
@@ -57,14 +57,14 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemViewType(int position) {
         if (!mResults.isEmpty()) {
-            if (position<mResults.size()) {
+            if (position < mResults.size()) {
                 return ITEM;
             } else {
                 return FOOTER;
             }
         } else {
-            if (mFilterOption == Filter.COMPLETE || mFilterOption == Filter.INCOMPLETE ) {
-                if (position==0) {
+            if (mFilterOption == Filter.COMPLETE || mFilterOption == Filter.INCOMPLETE) {
+                if (position == 0) {
                     return NO_ITEM;
                 } else {
                     return FOOTER;
@@ -100,6 +100,14 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             dropHolder.setWhen(drop.getWhen());
             dropHolder.setBackground(drop.isCompleted());
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (position < mResults.size()) {
+            return mResults.get(position).getAdded();
+        }
+        return RecyclerView.NO_ID;
     }
 
     @Override
