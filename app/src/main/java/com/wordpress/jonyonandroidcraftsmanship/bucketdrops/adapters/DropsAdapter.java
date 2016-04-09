@@ -31,6 +31,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private RealmResults<Drop> mResults = null;
     private AddListener mAddListener = null;
     private MarkListener mMarkListener = null;
+    private ResetListener mResetListener = null;
     private Realm mRealm = null;
     private int mFilterOption = Filter.NONE;
     private Context mContext = null;
@@ -42,10 +43,11 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         update(results);
     }
 
-    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener) {
+    public DropsAdapter(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener, ResetListener resetListener) {
         this(context, realm, results);
         mAddListener = listener;
         mMarkListener = markListener;
+        mResetListener = resetListener;
     }
 
     public void update(RealmResults<Drop> results) {
@@ -130,6 +132,13 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mResults.get(position).removeFromRealm();
             mRealm.commitTransaction();
             notifyItemRemoved(position);
+        }
+        resetFilterIfEmpty();
+    }
+
+    private void resetFilterIfEmpty() {
+        if (mResults.isEmpty() && (mFilterOption == Filter.INCOMPLETE || mFilterOption == Filter.COMPLETE)) {
+            mResetListener.onReset();
         }
     }
 

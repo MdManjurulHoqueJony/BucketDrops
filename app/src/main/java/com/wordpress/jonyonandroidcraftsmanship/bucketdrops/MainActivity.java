@@ -19,6 +19,7 @@ import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Divider;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.DropsAdapter;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.Filter;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.MarkListener;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.ResetListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.SimpleTouchCallback;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView;
@@ -74,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private ResetListener mResetListener=new ResetListener() {
+        @Override
+        public void onReset() {
+            AppBucketDrops.save(MainActivity.this,Filter.NONE);
+            loadResults(Filter.NONE);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.hideIfEmpty(toolbar);
         recyclerView.showIfEmpty(emptyDrops);
-        mAdapter = new DropsAdapter(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter = new DropsAdapter(this, mRealm, mResults, mAddListener, mMarkListener,mResetListener);
         mAdapter.setHasStableIds(true);
         recyclerView.setAdapter(mAdapter);
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
