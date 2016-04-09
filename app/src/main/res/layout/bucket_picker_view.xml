@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content "
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvMonth"
-        style="@style/DatePickerItemStyle"
-        android:text="JAN" />
+        style="@style/DatePickerItemStyle" />
 
     <Space
         android:layout_width="32dp"
@@ -16,8 +15,7 @@
 
     <TextView
         android:id="@+id/tvDate"
-        style="@style/DatePickerItemStyle"
-        android:text="10" />
+        style="@style/DatePickerItemStyle" />
 
     <Space
         android:layout_width="32dp"
@@ -25,6 +23,5 @@
 
     <TextView
         android:id="@+id/tvYear"
-        style="@style/DatePickerItemStyle"
-        android:text="2021" />
+        style="@style/DatePickerItemStyle" />
 </LinearLayout>

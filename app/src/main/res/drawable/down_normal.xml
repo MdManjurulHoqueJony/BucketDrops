@@ -3,12 +3,14 @@
     <item>
         <shape>
             <solid android:color="@color/purple" />
-            <size android:width="96dp" />
+            <size android:width="@dimen/tv_picker_item_width" />
+            <corners android:bottomLeftRadius="@dimen/bg_picker_item_corner_radius" />
+            <corners android:bottomRightRadius="@dimen/bg_picker_item_corner_radius" />
         </shape>
     </item>
-    <item
-        android:drawable="@drawable/ic_down_normal"
-        android:gravity="center">
-
+    <item>
+        <bitmap android:src="@drawable/ic_down_normal"
+            android:gravity="center"/>
     </item>
+
 </layer-list>

@@ -4,11 +4,13 @@
         <shape>
             <solid android:color="@android:color/transparent" />
             <size android:width="96dp" />
+            <corners android:bottomLeftRadius="@dimen/bg_picker_item_corner_radius" />
+            <corners android:bottomRightRadius="@dimen/bg_picker_item_corner_radius" />
         </shape>
     </item>
-    <item
-        android:drawable="@drawable/ic_down_pressed"
-        android:gravity="center">
-
+    <item>
+        <bitmap android:src="@drawable/ic_down_pressed"
+            android:gravity="center"/>
     </item>
+
 </layer-list>

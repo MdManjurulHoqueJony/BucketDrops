@@ -23,4 +23,6 @@
     <dimen name="iv_drop_size">12dp</dimen>
     <dimen name="tv_what_horizontal_padding">22dp</dimen>
     <dimen name="tv_no_tems_vertical_padding">22dp</dimen>
+    <dimen name="bg_picker_item_corner_radius">4dp</dimen>
+    <dimen name="tv_picker_item_width">96dp</dimen>
 </resources>
