@@ -1,6 +1,5 @@
 package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize() {
         mRealm = Realm.getDefaultInstance();
-        int filterOption = load();
+        int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         emptyDrops = findViewById(R.id.emptyDrops);
@@ -149,19 +148,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.actionSortAscendingDate:
                 filterOption=Filter.LEAST_TIME_LEFT;
-                save(filterOption);
+                AppBucketDrops.save(this,filterOption);
                 break;
             case R.id.actionSortDescendingDate:
                 filterOption=Filter.MOST_TIME_LEFT;
-                save(filterOption);
+                AppBucketDrops.save(this,filterOption);
                 break;
             case R.id.actionShowComplete:
                 filterOption=Filter.COMPLETE;
-                save(filterOption);
+                AppBucketDrops.save(this,filterOption);
                 break;
             case R.id.actionShowIncomplete:
                 filterOption=Filter.INCOMPLETE;
-                save(filterOption);
+                AppBucketDrops.save(this,filterOption);
                 break;
             default:
                 handled = false;
@@ -194,16 +193,4 @@ public class MainActivity extends AppCompatActivity {
         mResults.addChangeListener(realmChangeListener);
     }
 
-    private void save(int filterOption) {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("filter", filterOption);
-        editor.apply();
-    }
-
-    private int load() {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        int filterOption = preferences.getInt("filter", Filter.NONE);
-        return filterOption;
-    }
 }
