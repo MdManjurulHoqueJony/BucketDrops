@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_dialog">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/tvTitle_vertical_margin"
-        android:layout_marginTop="@dimen/tvTitle_vertical_margin"
-        android:text="@string/str_add_drop"
-        android:textSize="@dimen/tvTitle_font_size" />
-
-    <ImageButton
-        android:id="@+id/ibtnClose"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_alignBottom="@id/tvTitle"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/tvTitle"
-        android:background="@null"
-        android:src="@drawable/ic_close" />
-
-    <EditText
-        android:id="@+id/etDrop"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvTitle"
-        android:inputType="textVisiblePassword"
-        android:hint="@string/hint_et_drop"
-        android:padding="@dimen/et_drop_padding" />
+        android:layout_height="match_parent"
+        android:background="@color/bg_dialog">
 
-    <com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketPickerView
-        android:id="@+id/bpvDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etDrop"/>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/tvTitle_vertical_margin"
+            android:layout_marginTop="@dimen/tvTitle_vertical_margin"
+            android:text="@string/str_add_drop"
+            android:textSize="@dimen/tvTitle_font_size" />
 
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bpvDate"
-        android:text="@string/str_add_it"
-        android:textAllCaps="false" />
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/ibtnClose"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignBottom="@id/tvTitle"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tvTitle"
+            android:background="@null"
+            android:src="@drawable/ic_close" />
+
+        <EditText
+            android:id="@+id/etDrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:hint="@string/hint_et_drop"
+            android:inputType="textVisiblePassword"
+            android:padding="@dimen/et_drop_padding" />
+
+        <com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketPickerView
+            android:id="@+id/bpvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etDrop"
+            android:layout_marginBottom="64dp"
+            android:layout_marginTop="64dp" />
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bpvDate"
+            android:text="@string/str_add_it"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+</ScrollView>
