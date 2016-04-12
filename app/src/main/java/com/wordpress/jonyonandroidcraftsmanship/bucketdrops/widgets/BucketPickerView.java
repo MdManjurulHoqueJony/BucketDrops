@@ -3,8 +3,9 @@ package com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,26 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
     public static final int TOP = 1;
     public static final int RIGHT = 2;
     public static final int BOTTOM = 3;
+    private boolean mIncrement = false;
+    private boolean mDecrement = false;
+    public static final int DELAY = 250;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (mIncrement) {
+                increment(mActiveId);
+            }
+            if (mDecrement) {
+                decrement(mActiveId);
+            }
+            if (mIncrement||mDecrement) {
+                mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+            }
+            return true;
+        }
+    });
+    private int MESSAGE_WHAT = 123;
+    private int mActiveId = 0;
 
     public BucketPickerView(Context context) {
         super(context);
@@ -102,19 +123,30 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
             Rect bottomBounds = drawables[BOTTOM].getBounds();
             float x = event.getX();
             float y = event.getY();
-            Log.d("Jony", String.valueOf(topDrawableHit(textView, topBounds.height(), x, y)));
+            mActiveId = textView.getId();
             if (topDrawableHit(textView, topBounds.height(), x, y)) {
-                Log.d("Jony","Inside top click");
                 if (isActionDown(event)) {
+                    mIncrement = true;
                     increment(textView.getId());
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                }
+                if (isActionUpOrCancel(event)) {
+                    mIncrement = false;
                 }
             } else if (bottomDrawableHit(textView, bottomBounds.height(), x, y)) {
-                Log.d("Jony","Inside top click");
                 if (isActionDown(event)) {
+                    mDecrement = true;
                     decrement(textView.getId());
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                }
+                if (isActionUpOrCancel(event)) {
+                    mDecrement = false;
                 }
             } else {
-
+                mIncrement = false;
+                mDecrement = false;
             }
         }
     }
@@ -150,15 +182,19 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
     }
 
     private void set(Calendar calendar) {
-        int date=calendar.get(Calendar.DATE);
-        int year=calendar.get(Calendar.YEAR);
-        tvDate.setText(date+"");
-        tvYear.setText(year+"");
+        int date = calendar.get(Calendar.DATE);
+        int year = calendar.get(Calendar.YEAR);
+        tvDate.setText(date + "");
+        tvYear.setText(year + "");
         tvMonth.setText(mFormatter.format(calendar.getTime()));
     }
 
     private boolean isActionDown(MotionEvent event) {
         return event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private boolean isActionUpOrCancel(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL;
     }
 
     private boolean topDrawableHit(TextView textView, int drawableHeight, float x, float y) {
