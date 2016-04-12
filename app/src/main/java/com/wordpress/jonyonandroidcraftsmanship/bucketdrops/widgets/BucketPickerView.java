@@ -39,7 +39,7 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
             if (mDecrement) {
                 decrement(mActiveId);
             }
-            if (mIncrement||mDecrement) {
+            if (mIncrement || mDecrement) {
                 mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
             }
             return true;
@@ -130,9 +130,11 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
                     increment(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                    toggleDrawable(textView,true);
                 }
                 if (isActionUpOrCancel(event)) {
                     mIncrement = false;
+                    toggleDrawable(textView,false);
                 }
             } else if (bottomDrawableHit(textView, bottomBounds.height(), x, y)) {
                 if (isActionDown(event)) {
@@ -140,13 +142,16 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
                     decrement(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                    toggleDrawable(textView,true);
                 }
                 if (isActionUpOrCancel(event)) {
                     mDecrement = false;
+                    toggleDrawable(textView,false);
                 }
             } else {
                 mIncrement = false;
                 mDecrement = false;
+                toggleDrawable(textView,false);
             }
         }
     }
@@ -219,5 +224,18 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
 
     private boolean hasDrawableBottom(Drawable[] drawables) {
         return drawables[BOTTOM] != null;
+    }
+
+    private void toggleDrawable(TextView textView, boolean pressed) {
+        if (pressed) {
+            if (mIncrement) {
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.up_pressed, 0, R.drawable.down_normal);
+            }
+            if (mDecrement) {
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.up_normal, 0, R.drawable.down_pressed);
+            }
+        } else {
+            textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.up_normal, 0, R.drawable.down_normal);
+        }
     }
 }
