@@ -10,7 +10,7 @@
         style="@style/DatePickerItemStyle" />
 
     <Space
-        android:layout_width="32dp"
+        android:layout_width="@dimen/bpv_space"
         android:layout_height="match_parent" />
 
     <TextView
@@ -18,7 +18,7 @@
         style="@style/DatePickerItemStyle" />
 
     <Space
-        android:layout_width="32dp"
+        android:layout_width="@dimen/bpv_space"
         android:layout_height="match_parent" />
 
     <TextView

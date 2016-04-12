@@ -55,6 +55,7 @@ public class DialogMark extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         mBtnClose = (ImageButton) view.findViewById(R.id.btnClose);
         mBtnCompleted = (Button) view.findViewById(R.id.btnCompleted);
+        AppBucketDrops.setRalewayRegular(getActivity(), mBtnCompleted);
         mBtnClose.setOnClickListener(mBtnClickListener);
         mBtnCompleted.setOnClickListener(mBtnClickListener);
     }

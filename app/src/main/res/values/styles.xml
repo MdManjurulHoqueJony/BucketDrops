@@ -1,8 +1,9 @@
 <resources>
-
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar"></style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. -->
+
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
@@ -31,6 +32,4 @@
         <item name="android:drawablePadding">@dimen/tv_picker_drawable_padding</item>
     </style>
 
-    <dimen name="tv_picker_drawable_padding">16dp</dimen>
-    <dimen name="tv_picker_item_text_size">24sp</dimen>
 </resources>

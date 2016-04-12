@@ -165,6 +165,7 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemView.setOnClickListener(this);
             tvWhat = (TextView) itemView.findViewById(R.id.tvWhat);
             tvWhen = (TextView) itemView.findViewById(R.id.tvWhen);
+            AppBucketDrops.setRalewayRegular(mContext, tvWhat, tvWhen);
             mMarkListener = markListener;
         }
 
@@ -202,10 +203,12 @@ public class DropsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Button btnFooter = null;
         AddListener mListener = null;
-
+        Context mContext=null;
         public FooterHolder(View itemView) {
             super(itemView);
+            mContext=itemView.getContext();
             btnFooter = (Button) itemView.findViewById(R.id.btnFooter);
+            AppBucketDrops.setRalewayRegular(mContext, btnFooter);
             btnFooter.setOnClickListener(this);
         }
 

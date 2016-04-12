@@ -9,4 +9,5 @@
     <string name="action_complete">Complete</string>
     <string name="action_incomplete">Incomplete</string>
     <string name="str_no_items_to_display">No Items To Display</string>
+    <string name="sans_serif_thin">sans-serif-thin</string>
 </resources>

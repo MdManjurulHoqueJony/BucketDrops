@@ -47,6 +47,7 @@ public class AddDialogFragment extends DialogFragment {
         etDrop = (EditText) view.findViewById(R.id.etDrop);
         bpvDate = (BucketPickerView) view.findViewById(R.id.bpvDate);
         btnAdd = (Button) view.findViewById(R.id.btnAdd);
+        AppBucketDrops.setRalewayRegular(getActivity(), etDrop, btnAdd);
         ibtnClose.setOnClickListener(myClickListener);
         btnAdd.setOnClickListener(myClickListener);
     }
