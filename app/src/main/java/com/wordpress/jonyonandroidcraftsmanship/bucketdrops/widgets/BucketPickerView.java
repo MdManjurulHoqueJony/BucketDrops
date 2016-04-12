@@ -3,8 +3,10 @@ package com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -130,11 +132,11 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
                     increment(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
-                    toggleDrawable(textView,true);
+                    toggleDrawable(textView, true);
                 }
                 if (isActionUpOrCancel(event)) {
                     mIncrement = false;
-                    toggleDrawable(textView,false);
+                    toggleDrawable(textView, false);
                 }
             } else if (bottomDrawableHit(textView, bottomBounds.height(), x, y)) {
                 if (isActionDown(event)) {
@@ -142,16 +144,16 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
                     decrement(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
-                    toggleDrawable(textView,true);
+                    toggleDrawable(textView, true);
                 }
                 if (isActionUpOrCancel(event)) {
                     mDecrement = false;
-                    toggleDrawable(textView,false);
+                    toggleDrawable(textView, false);
                 }
             } else {
                 mIncrement = false;
                 mDecrement = false;
-                toggleDrawable(textView,false);
+                toggleDrawable(textView, false);
             }
         }
     }
@@ -237,5 +239,28 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
         } else {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.up_normal, 0, R.drawable.down_normal);
         }
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("super", super.onSaveInstanceState());
+        bundle.putInt("date", mCalendar.get(Calendar.DATE));
+        bundle.putInt("month", mCalendar.get(Calendar.MONTH));
+        bundle.putInt("year", mCalendar.get(Calendar.YEAR));
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Parcelable) {
+            Bundle bundle = (Bundle) state;
+            state=bundle.getParcelable("super");
+            int date = bundle.getInt("date");
+            int month = bundle.getInt("month");
+            int year = bundle.getInt("year");
+            update(date, month, year, 0, 0, 0);
+        }
+        super.onRestoreInstanceState(state);
     }
 }
