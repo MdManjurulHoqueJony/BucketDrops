@@ -1,5 +1,8 @@
 package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,6 +25,7 @@ import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.MarkListene
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.ResetListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.SimpleTouchCallback;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.services.NotificationService;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView;
 
 import io.realm.Realm;
@@ -75,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private ResetListener mResetListener=new ResetListener() {
+    private ResetListener mResetListener = new ResetListener() {
         @Override
         public void onReset() {
-            AppBucketDrops.save(MainActivity.this,Filter.NONE);
+            AppBucketDrops.save(MainActivity.this, Filter.NONE);
             loadResults(Filter.NONE);
         }
     };
@@ -109,12 +113,16 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.hideIfEmpty(toolbar);
         recyclerView.showIfEmpty(emptyDrops);
-        mAdapter = new DropsAdapter(this, mRealm, mResults, mAddListener, mMarkListener,mResetListener);
+        mAdapter = new DropsAdapter(this, mRealm, mResults, mAddListener, mMarkListener, mResetListener);
         mAdapter.setHasStableIds(true);
         recyclerView.setAdapter(mAdapter);
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 5000, pendingIntent);
     }
 
     private void showDialog() {
@@ -159,20 +167,20 @@ public class MainActivity extends AppCompatActivity {
                 showDialog();
                 break;
             case R.id.actionSortAscendingDate:
-                filterOption=Filter.LEAST_TIME_LEFT;
-                AppBucketDrops.save(this,filterOption);
+                filterOption = Filter.LEAST_TIME_LEFT;
+                AppBucketDrops.save(this, filterOption);
                 break;
             case R.id.actionSortDescendingDate:
-                filterOption=Filter.MOST_TIME_LEFT;
-                AppBucketDrops.save(this,filterOption);
+                filterOption = Filter.MOST_TIME_LEFT;
+                AppBucketDrops.save(this, filterOption);
                 break;
             case R.id.actionShowComplete:
-                filterOption=Filter.COMPLETE;
-                AppBucketDrops.save(this,filterOption);
+                filterOption = Filter.COMPLETE;
+                AppBucketDrops.save(this, filterOption);
                 break;
             case R.id.actionShowIncomplete:
-                filterOption=Filter.INCOMPLETE;
-                AppBucketDrops.save(this,filterOption);
+                filterOption = Filter.INCOMPLETE;
+                AppBucketDrops.save(this, filterOption);
                 break;
             default:
                 handled = false;
