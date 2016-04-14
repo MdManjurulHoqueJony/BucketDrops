@@ -1,8 +1,5 @@
 package com.wordpress.jonyonandroidcraftsmanship.bucketdrops;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,7 +22,7 @@ import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.MarkListene
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.ResetListener;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.adapters.SimpleTouchCallback;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.beans.Drop;
-import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.services.NotificationService;
+import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.extras.Util;
 import com.wordpress.jonyonandroidcraftsmanship.bucketdrops.widgets.BucketRecyclerView;
 
 import io.realm.Realm;
@@ -119,10 +116,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, NotificationService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 5000, pendingIntent);
+        Util.scheduleAlarm(this);
     }
 
     private void showDialog() {
